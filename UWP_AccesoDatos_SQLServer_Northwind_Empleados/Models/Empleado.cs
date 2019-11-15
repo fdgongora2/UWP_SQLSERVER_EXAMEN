@@ -446,8 +446,8 @@ namespace UWP_AccesoDatos_SQLServer_Northwind_Empleados.Models
             int returnvalue = -1;
 
             string Consulta = " INSERT  INTO Employees    " +
-               " VALUES  ( @customerid, @EmployeeID, @OrderDate, @RequiredDate, @ShippedDate , " +
-                " @ShipVia , @Freight , @ShipName , @ShipAddress , @ShipCity , @ShipRegion, @ShipPostalCode , @ShipCountry ) ;" +
+               " VALUES  ( @LastName, @FirstName, @Title, @TitleofCourtesy, @BirthDate, @HireDate , " +
+                " @Adress , @City , @Region , @PostalCode , @Country , @HomePhone, @Extension , NULL, @Notes, @ReportsTo, @PhotoPath ) ;" +
 
                 // Sentencia para que devuelva el nuevo ID de pedido que es autoincremental
                 " SELECT SCOPE_IDENTITY();";
@@ -456,7 +456,7 @@ namespace UWP_AccesoDatos_SQLServer_Northwind_Empleados.Models
 
             try
             {
-                using (SqlConnection conn = new SqlConnection((App.Current as App).ConnectionString))
+                using (SqlConnection conn = new SqlConnection(cadenaConexionServidor))
                 {
                     conn.Open();
                     if (conn.State == System.Data.ConnectionState.Open)
@@ -469,20 +469,23 @@ namespace UWP_AccesoDatos_SQLServer_Northwind_Empleados.Models
                             // nos dará un error. Para solucionarlo ponemos al valor ((object)XXXXX) ?? DBNull.Value
                             // de esta forma si el valor el nulo se le pasa un valor Nulo reconocido por el servidor de 
                             // bases de datos.
-                            cmd.Parameters.AddWithValue("@customerid", ((object)CustomerID) ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@EmployeeID", ((object)EmployeeID) ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@OrderDate", ((object)OrderDate) ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@RequiredDate", ((object)RequiredDate) ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@ShippedDate", ((object)ShippedDate) ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@ShipVia", ((object)ShipVia) ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@Freight", ((object)Freight) ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@ShipName", ((object)ShipName) ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@ShipAddress", ((object)ShipAddress) ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@ShipCity", ((object)ShipCity) ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@ShipRegion", ((object)ShipRegion) ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@ShipPostalCode", ((object)ShipPostalCode) ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@ShipCountry", ((object)ShipCountry) ?? DBNull.Value);
-
+                            cmd.Parameters.AddWithValue("@LastName", ((object)LastName) ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("@FirstName", ((object)FirstName) ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("@Title", ((object)Title) ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("@TitleofCourtesy", ((object)TitleOfCourtesy) ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("@BirthDate", ((object)BirthDate) ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("@HireDate", ((object)HireDate) ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("@Adress", ((object)Address) ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("@City", ((object)City) ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("@Region", ((object)Region) ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("@PostalCode", ((object)PostalCode) ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("@Country", ((object)Country) ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("@HomePhone", ((object)HomePhone) ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("@Extension", ((object)Extension) ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("@Extension", ((object)Extension) ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("@Notes", ((object)Notes) ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("@ReportsTo", ((object)ReportsTo) ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("@PhotoPath", ((object)PhotoPath) ?? DBNull.Value);
                             // EL valor devuelto corresponde con las filas afectadas por la sentencia
 
                             object returnObj = cmd.ExecuteScalar();
@@ -509,9 +512,107 @@ namespace UWP_AccesoDatos_SQLServer_Northwind_Empleados.Models
 
         }
 
+        public int Actualizar_Datos_Empleado()
+        {
+            // <param> Parámetro de salida .... Número del nuevo pedido o -1 si ha habido un error</param>
+            // A la hora de crear la sentencia a ejecutar podemos crearla concatenando cadenas. Esto tiene dos problemas:            
+            //
+            //    1. Un ataque SQLInjection en los valores que pasamos.
+            //    2. La dificultad de crear la cadena de la senytencia ... poner comillas, etc.
+            //
+            // Si utilizamos parámetros solucionamos los problemas anteriores.
+
+            int returnvalue = -1;
+
+            string Consulta = " Update Employees    " +
+               " SET " +
+               " LastName = @LastName , " +
+               " FisrtName = @FirstName, " +
+               " Title = @Title, " +
+               " TitleofCourtesy = @TitleofCourtesy, " +
+               " BirthDate = @BirthDate, " +
+               " HireDate = @HireDate , " +
+               " Address = @Adress , " +
+               " City = @City , " +
+               " Region = @Region , " +
+               " PostalCode = @PostalCode , " +
+               " Country = @Country , " +
+               " HomePhone = @HomePhone, " +
+               " Extension = @Extension , " +
+               " Photo = NULL, " +
+               " Notes = @Notes, " +
+               " ReportsTo = @ReportsTo," +
+               " PhotoPath =  @PhotoPath " +
+               " WHERE EmployeeID = @EmployeeID ;" +
+
+                
+
+
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(cadenaConexionServidor))
+                {
+                    conn.Open();
+                    if (conn.State == System.Data.ConnectionState.Open)
+                    {
+                        using (SqlCommand cmd = conn.CreateCommand())
+                        {
+                            cmd.CommandText = Consulta;
+
+                            // Un problema con los parámetros es que si tienen un valor no establecido válido
+                            // nos dará un error. Para solucionarlo ponemos al valor ((object)XXXXX) ?? DBNull.Value
+                            // de esta forma si el valor el nulo se le pasa un valor Nulo reconocido por el servidor de 
+                            // bases de datos.
+                            cmd.Parameters.AddWithValue("@EmployeeID", ((object)EmployeeID) ?? DBNull.Value);
+
+                            cmd.Parameters.AddWithValue("@LastName", ((object)LastName) ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("@FirstName", ((object)FirstName) ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("@Title", ((object)Title) ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("@TitleofCourtesy", ((object)TitleOfCourtesy) ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("@BirthDate", ((object)BirthDate) ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("@HireDate", ((object)HireDate) ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("@Adress", ((object)Address) ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("@City", ((object)City) ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("@Region", ((object)Region) ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("@PostalCode", ((object)PostalCode) ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("@Country", ((object)Country) ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("@HomePhone", ((object)HomePhone) ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("@Extension", ((object)Extension) ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("@Extension", ((object)Extension) ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("@Notes", ((object)Notes) ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("@ReportsTo", ((object)ReportsTo) ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("@PhotoPath", ((object)PhotoPath) ?? DBNull.Value);
+                            // EL valor devuelto corresponde con las filas afectadas por la sentencia
+
+                            object returnObj = cmd.ExecuteScalar();
+
+                            if (returnObj != null)
+                            {
+                                int.TryParse(returnObj.ToString(), out returnvalue);
+                            }
+
+
+
+                        }
+                    }
+                }
+
+            }
+            catch (Exception eSql)
+            {
+                Debug.WriteLine("Exception: " + eSql.Message);
+            }
+
+            return returnvalue;
+
+
+        }
+
+
+
     }
 }
 
 
 
-}
