@@ -543,7 +543,7 @@ namespace UWP_AccesoDatos_SQLServer_Northwind_Empleados.Models
                " Notes = @Notes, " +
                " ReportsTo = @ReportsTo," +
                " PhotoPath =  @PhotoPath " +
-               " WHERE EmployeeID = @EmployeeID ;" +
+               " WHERE EmployeeID = @EmployeeID ;";
 
                 
 
