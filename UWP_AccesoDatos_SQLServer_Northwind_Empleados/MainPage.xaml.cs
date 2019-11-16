@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using UWP_AccesoDatos_SQLServer_Northwind_Empleados.Models;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -22,9 +24,37 @@ namespace UWP_AccesoDatos_SQLServer_Northwind_Empleados
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private ObservableCollection<Empleado> Listado_Empleados;
         public MainPage()
         {
             this.InitializeComponent();
+            Listado_Empleados = Empleado.ObtenerEmpleados();
+            GV_Empleados.ItemsSource = Listado_Empleados;
+        }
+
+        private void Alta_pedido_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Alta_pedido_Click_1(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Alta_Empleado_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Editar_Empleado_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Borrar_Empleado_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

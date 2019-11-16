@@ -3,12 +3,109 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:UWP_AccesoDatos_SQLServer_Northwind_Empleados"
+    xmlns:modelos="using:UWP_AccesoDatos_SQLServer_Northwind_Empleados.Models"  
+    
+    
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+
+    <Page.Resources>
+
+        <modelos:AMayusculasConverter x:Key="ConverterMayusculas"></modelos:AMayusculasConverter>
+        <Color x:Key="AzulEspecial">#FF4096DA</Color>
+        <Style TargetType="TextBlock" x:Key="Nombre_Empleado">            
+            <Setter Property="Foreground" Value="{StaticResource AzulEspecial}"></Setter>
+            <Setter Property="FontStyle" Value="{StaticResource TitleTextBlockStyle }"></Setter>            
+            <Setter Property="FontWeight" Value="Black"></Setter>
+        </Style>
+    </Page.Resources>
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+           
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <CommandBar Background="Transparent" IsOpen="False" DefaultLabelPosition="Right">
+
+            <AppBarButton x:Name="Alta_Empleado" Icon="Add" Label="Nuevo Empleado" Click="Alta_Empleado_Click"/>
+            <AppBarButton x:Name="Editar_Empleado" Icon="Edit" Label="Modificar Empleado" Click="Editar_Empleado_Click" />
+            <AppBarButton x:Name="Borrar_Empleado" Icon="Delete" Label="Borrar Empleado" Click="Borrar_Empleado_Click"/>
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Icon="Setting" Label="Settings">
+                    <AppBarButton.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Control" Key="S" />
+                    </AppBarButton.KeyboardAccelerators>
+                </AppBarButton>
+            </CommandBar.SecondaryCommands>
+            <CommandBar.Content>
+                <TextBlock Text="EMPLEADOS (FONDO DE BIKINI)" Style="{ThemeResource SubtitleTextBlockStyle}"
+                           Margin="24 0 0 0 "></TextBlock>
+            </CommandBar.Content>
+        </CommandBar>
+
+
+        <GridView x:Name="GV_Empleados"
+                  Grid.Row="1">
+            <GridView.ItemTemplate>
+                <DataTemplate x:DataType="modelos:Empleado">
+                    <Grid MinWidth="500" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="250" ></ColumnDefinition>
+                            <ColumnDefinition Width="10"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        
+                        <Image  Source="{x:Bind PhotoPath}"
+                               Grid.Column="0"
+                               Stretch="Uniform"
+                                VerticalAlignment="Center"                                
+                                Width="200"
+                              ></Image>
+                        <StackPanel Orientation="Vertical" 
+                                    Grid.Column="2"
+                                    VerticalAlignment="Top"
+                                    >
+                            <StackPanel Orientation="Horizontal" >
+                                <TextBlock Text="{x:Bind LastName, Converter={StaticResource ConverterMayusculas}}" Style="{StaticResource Nombre_Empleado}"></TextBlock>
+                                <TextBlock Text=" ,  "  Style="{StaticResource Nombre_Empleado}"></TextBlock>
+                                <TextBlock Text="{x:Bind FirstName , Converter={StaticResource ConverterMayusculas}}" Style="{StaticResource Nombre_Empleado}"></TextBlock>
+                                
+                            </StackPanel>
+                            <Rectangle Height="2" VerticalAlignment="Stretch" Fill="Black" Margin="0 5 0 10"></Rectangle>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="5"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                </Grid.RowDefinitions>
+
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE715;" Foreground="{StaticResource AzulEspecial}" VerticalAlignment="Top"/>
+                                <StackPanel Orientation="Vertical" Grid.Column="1">
+                                    <TextBlock Text="{x:Bind Address}"></TextBlock>
+                                    <TextBlock Text="{x:Bind PostalCode}"></TextBlock>
+                                    <TextBlock Text="{x:Bind City}"></TextBlock>
+                                    <TextBlock Text="{x:Bind Country}"></TextBlock>
+                                </StackPanel>
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Foreground="{StaticResource AzulEspecial}" Glyph="&#xE717;" VerticalAlignment="Top"
+                                          Grid.Row="2" />
+                                <StackPanel Orientation="Vertical"  Grid.Row="2" Grid.Column="1" >
+                                    <TextBlock Text="{x:Bind HomePhone}"></TextBlock>                                    
+                                </StackPanel>
+                            </Grid>                            
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+        </GridView>
 
     </Grid>
 </Page>

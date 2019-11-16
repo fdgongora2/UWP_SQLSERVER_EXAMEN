@@ -357,7 +357,7 @@ namespace UWP_AccesoDatos_SQLServer_Northwind_Empleados.Models
             const string GetProductsQuery =
              " SELECT *                         " +
              " FROM Employees                   " +
-             " ORDER BY FirstName, LastName     ";
+             " ORDER BY LastName, FirstName     ";
 
             var empleados = new ObservableCollection<Empleado>();
             try
@@ -585,7 +585,7 @@ namespace UWP_AccesoDatos_SQLServer_Northwind_Empleados.Models
                             cmd.Parameters.AddWithValue("@PhotoPath", ((object)PhotoPath) ?? DBNull.Value);
                             // EL valor devuelto corresponde con las filas afectadas por la sentencia
 
-                            object returnObj = cmd.ExecuteScalar();
+                            object returnObj = cmd.ExecuteNonQuery();
 
                             if (returnObj != null)
                             {
@@ -609,6 +609,63 @@ namespace UWP_AccesoDatos_SQLServer_Northwind_Empleados.Models
 
         }
 
+        public bool Borrar_Empleado()
+        {
+            // <param> Parámetro de salida .... </param>
+            // A la hora de crear la sentencia a ejecutar podemos crearla concatenando cadenas. Esto tiene dos problemas:            
+            //
+            //    1. Un ataque SQLInjection en los valores que pasamos.
+            //    2. La dificultad de crear la cadena de la senytencia ... poner comillas, etc.
+            //
+            // Si utilizamos parámetros solucionamos los problemas anteriores.
+
+            if (this.EmployeeID > 0)
+
+            {
+
+                string Consulta = " DELETE                  " +
+                                  " FROM Employees             " +
+                                  " WHERE EmployeeID = @EmployeeID";
+
+                try
+                {
+                    using (SqlConnection conn = new SqlConnection(cadenaConexionServidor))
+                    {
+                        conn.Open();
+                        if (conn.State == System.Data.ConnectionState.Open)
+                        {
+                            using (SqlCommand cmd = conn.CreateCommand())
+                            {
+                                cmd.CommandText = Consulta;
+
+                                // Un problema con los parámetros es que si tienen un valor no establecido válido
+                                // nos dará un error. Para solucionarlo ponemos al valor ((object)XXXXX) ?? DBNull.Value
+                                // de esta forma si el valor el nulo se le pasa un valor Nulo reconocido por el servidor de 
+                                // bases de datos.
+                                cmd.Parameters.AddWithValue("@EmployeeID", ((object)EmployeeID) ?? DBNull.Value);
+
+                                // EL valor devuelto corresponde con las filas afectadas por la sentencia
+
+                                return (cmd.ExecuteNonQuery() == 1);
+
+                            }
+                        }
+                    }
+
+                }
+                catch (Exception eSql)
+                {
+                    Debug.WriteLine("Exception: " + eSql.Message);
+                }
+            }
+            else
+            {
+                Debug.WriteLine("Error : Intento de borrar un pedido sin número de pedido válido");
+            }
+
+            return false;
+
+        }
 
 
     }

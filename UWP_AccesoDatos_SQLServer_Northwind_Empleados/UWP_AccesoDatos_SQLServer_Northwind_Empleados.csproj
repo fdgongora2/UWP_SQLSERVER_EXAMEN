@@ -132,6 +132,16 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\A.jpg" />
+    <Content Include="Assets\B.jpg" />
+    <Content Include="Assets\C.jpg" />
+    <Content Include="Assets\D.jpg" />
+    <Content Include="Assets\E.jpg" />
+    <Content Include="Assets\F.jpg" />
+    <Content Include="Assets\G.jpg" />
+    <Content Include="Assets\H.jpg" />
+    <Content Include="Assets\I.jpg" />
+    <Content Include="Assets\J.jpg" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -154,6 +164,12 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.9</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
+      <Version>6.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls.DataGrid">
+      <Version>6.0.0</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup />

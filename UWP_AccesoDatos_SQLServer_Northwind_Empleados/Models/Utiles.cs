@@ -2,10 +2,17 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Graphics.Imaging;
+using Windows.Storage.Streams;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
+
 
 namespace UWP_AccesoDatos_SQLServer_Northwind_Empleados.Models
 {
@@ -118,4 +125,56 @@ namespace UWP_AccesoDatos_SQLServer_Northwind_Empleados.Models
         }
     }
 
-  }
+    public class AMayusculasConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+
+        {            
+            return value.ToString().ToUpper();
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+
+            return value;
+        }
+    }
+
+    public sealed class ObjectToImageConverter : IValueConverter
+    {
+
+        public static BitmapImage ImageFromBuffer(Byte[] bytes)
+        {
+            BitmapImage image = new BitmapImage();
+            using (InMemoryRandomAccessStream stream = new InMemoryRandomAccessStream())
+            {
+                stream.AsStreamForWrite().Write(bytes, 0, bytes.Length);
+                image.SetSource(stream);
+            }
+            return image;
+        }
+
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+
+
+            return ImageFromBuffer(value as byte[]);
+
+            if (value is ImageSource imageSource)
+            {
+                return imageSource;
+            }
+            if (value is String url)
+            {
+                return url;
+            }
+            return null;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+}
