@@ -32,29 +32,28 @@ namespace UWP_AccesoDatos_SQLServer_Northwind_Empleados
             GV_Empleados.ItemsSource = Listado_Empleados;
         }
 
-        private void Alta_pedido_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Alta_pedido_Click_1(object sender, RoutedEventArgs e)
-        {
-
-        }
-
+   
         private void Alta_Empleado_Click(object sender, RoutedEventArgs e)
         {
-
+            this.Frame.Navigate(typeof(EditarEmpleado));
         }
 
         private void Editar_Empleado_Click(object sender, RoutedEventArgs e)
         {
-
+            if (GV_Empleados.SelectedItem != null)
+            {
+                this.Frame.Navigate(typeof(EditarEmpleado), GV_Empleados.SelectedItem);
+            }
         }
 
         private void Borrar_Empleado_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void GV_Empleados_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(EditarEmpleado), GV_Empleados.SelectedItem);
         }
     }
 }

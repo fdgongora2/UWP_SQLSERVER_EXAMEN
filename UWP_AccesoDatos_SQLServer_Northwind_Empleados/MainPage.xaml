@@ -50,7 +50,7 @@
 
 
         <GridView x:Name="GV_Empleados"
-                  Grid.Row="1">
+                  Grid.Row="1" DoubleTapped="GV_Empleados_DoubleTapped">
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="modelos:Empleado">
                     <Grid MinWidth="500" >
