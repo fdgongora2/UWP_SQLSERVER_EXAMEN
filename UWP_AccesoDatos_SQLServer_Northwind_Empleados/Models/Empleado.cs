@@ -350,6 +350,15 @@ namespace UWP_AccesoDatos_SQLServer_Northwind_Empleados.Models
             }
         }
 
+        public Empleado()
+        {
+            this.PhotoPath = "Assets/SplashScreen.scale-200.png";
+            this.BirthDate = DateTime.Now.AddDays(-5000);
+            this.HireDate = DateTime.Now;
+            // Hay una validación de integridad referencial con la propia tabla
+            this.ReportsTo = null;
+ 
+        }
 
         public static ObservableCollection<Empleado> ObtenerEmpleados()
         {
@@ -482,9 +491,18 @@ namespace UWP_AccesoDatos_SQLServer_Northwind_Empleados.Models
                             cmd.Parameters.AddWithValue("@Country", ((object)Country) ?? DBNull.Value);
                             cmd.Parameters.AddWithValue("@HomePhone", ((object)HomePhone) ?? DBNull.Value);
                             cmd.Parameters.AddWithValue("@Extension", ((object)Extension) ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@Extension", ((object)Extension) ?? DBNull.Value);
                             cmd.Parameters.AddWithValue("@Notes", ((object)Notes) ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@ReportsTo", ((object)ReportsTo) ?? DBNull.Value);
+
+                            if ((ReportsTo != null) && (ReportsTo > 0))
+                            {
+                                cmd.Parameters.AddWithValue("@ReportsTo", ReportsTo);
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@ReportsTo", DBNull.Value);
+
+                            }
+                            
                             cmd.Parameters.AddWithValue("@PhotoPath", ((object)PhotoPath) ?? DBNull.Value);
                             // EL valor devuelto corresponde con las filas afectadas por la sentencia
 
@@ -512,7 +530,7 @@ namespace UWP_AccesoDatos_SQLServer_Northwind_Empleados.Models
 
         }
 
-        public int Actualizar_Datos_Empleado()
+        public bool Actualizar_Datos_Empleado()
         {
             // <param> Parámetro de salida .... Número del nuevo pedido o -1 si ha habido un error</param>
             // A la hora de crear la sentencia a ejecutar podemos crearla concatenando cadenas. Esto tiene dos problemas:            
@@ -522,12 +540,12 @@ namespace UWP_AccesoDatos_SQLServer_Northwind_Empleados.Models
             //
             // Si utilizamos parámetros solucionamos los problemas anteriores.
 
-            int returnvalue = -1;
+            
 
             string Consulta = " Update Employees    " +
                " SET " +
                " LastName = @LastName , " +
-               " FisrtName = @FirstName, " +
+               " FirstName = @FirstName, " +
                " Title = @Title, " +
                " TitleofCourtesy = @TitleofCourtesy, " +
                " BirthDate = @BirthDate, " +
@@ -544,8 +562,6 @@ namespace UWP_AccesoDatos_SQLServer_Northwind_Empleados.Models
                " ReportsTo = @ReportsTo," +
                " PhotoPath =  @PhotoPath " +
                " WHERE EmployeeID = @EmployeeID ;";
-
-                
 
 
 
@@ -579,19 +595,20 @@ namespace UWP_AccesoDatos_SQLServer_Northwind_Empleados.Models
                             cmd.Parameters.AddWithValue("@Country", ((object)Country) ?? DBNull.Value);
                             cmd.Parameters.AddWithValue("@HomePhone", ((object)HomePhone) ?? DBNull.Value);
                             cmd.Parameters.AddWithValue("@Extension", ((object)Extension) ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@Extension", ((object)Extension) ?? DBNull.Value);
                             cmd.Parameters.AddWithValue("@Notes", ((object)Notes) ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@ReportsTo", ((object)ReportsTo) ?? DBNull.Value);
+                            if ((ReportsTo != null) && (ReportsTo > 0))
+                            {
+                                cmd.Parameters.AddWithValue("@ReportsTo", ReportsTo);
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@ReportsTo", DBNull.Value);
+
+                            }
                             cmd.Parameters.AddWithValue("@PhotoPath", ((object)PhotoPath) ?? DBNull.Value);
                             // EL valor devuelto corresponde con las filas afectadas por la sentencia
 
-                            object returnObj = cmd.ExecuteNonQuery();
-
-                            if (returnObj != null)
-                            {
-                                int.TryParse(returnObj.ToString(), out returnvalue);
-                            }
-
+                            return (cmd.ExecuteNonQuery() == 1);
 
 
                         }
@@ -604,7 +621,7 @@ namespace UWP_AccesoDatos_SQLServer_Northwind_Empleados.Models
                 Debug.WriteLine("Exception: " + eSql.Message);
             }
 
-            return returnvalue;
+            return false;
 
 
         }

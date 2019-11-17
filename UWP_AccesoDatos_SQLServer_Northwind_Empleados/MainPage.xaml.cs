@@ -48,7 +48,10 @@ namespace UWP_AccesoDatos_SQLServer_Northwind_Empleados
 
         private void Borrar_Empleado_Click(object sender, RoutedEventArgs e)
         {
-
+            if (GV_Empleados.SelectedItem != null)
+            {
+                ((Empleado)GV_Empleados.SelectedItem).Borrar_Empleado();
+            }
         }
 
         private void GV_Empleados_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)

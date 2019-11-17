@@ -23,7 +23,7 @@ namespace UWP_AccesoDatos_SQLServer_Northwind_Empleados
     /// </summary>
     public sealed partial class EditarEmpleado : Page
     {
-        private Empleado Empleado_Actual ;
+        private Empleado Empleado_Actual;
         public EditarEmpleado()
         {
             this.InitializeComponent();
@@ -48,6 +48,23 @@ namespace UWP_AccesoDatos_SQLServer_Northwind_Empleados
 
         private void Aceptar_Click(object sender, RoutedEventArgs e)
         {
+            if (Empleado_Actual.EmployeeID > 0)
+            {
+                if (Empleado_Actual.Actualizar_Datos_Empleado())
+                {
+                    this.Frame.Navigate(typeof(MainPage));
+                }
+
+            }
+            else
+            {
+                if  (Empleado_Actual.Alta_Empleado() > 0)
+                {
+                    this.Frame.Navigate(typeof(MainPage));
+                }
+
+
+            }
 
         }
 

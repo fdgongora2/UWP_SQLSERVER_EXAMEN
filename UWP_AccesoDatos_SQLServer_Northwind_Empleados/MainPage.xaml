@@ -20,7 +20,7 @@
         <Style TargetType="TextBlock" x:Key="Nombre_Empleado">            
             <Setter Property="Foreground" Value="{StaticResource AzulEspecial}"></Setter>
             <Setter Property="FontStyle" Value="{StaticResource TitleTextBlockStyle }"></Setter>            
-            <Setter Property="FontWeight" Value="Black"></Setter>
+            <Setter Property="FontWeight" Value="Normal"></Setter>
         </Style>
     </Page.Resources>
     <Grid>
@@ -86,6 +86,8 @@
                                     <RowDefinition Height="Auto"></RowDefinition>
                                     <RowDefinition Height="5"></RowDefinition>
                                     <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="5"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
                                 </Grid.RowDefinitions>
 
                                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE715;" Foreground="{StaticResource AzulEspecial}" VerticalAlignment="Top"/>
@@ -99,6 +101,11 @@
                                           Grid.Row="2" />
                                 <StackPanel Orientation="Vertical"  Grid.Row="2" Grid.Column="1" >
                                     <TextBlock Text="{x:Bind HomePhone}"></TextBlock>                                    
+                                </StackPanel>
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Foreground="{StaticResource AzulEspecial}" Glyph="&#xEC92;" VerticalAlignment="Top"
+                                          Grid.Row="4" />
+                                <StackPanel Orientation="Vertical"  Grid.Row="4" Grid.Column="1" >
+                                    <TextBlock Text="{x:Bind BirthDate}"></TextBlock>
                                 </StackPanel>
                             </Grid>                            
                         </StackPanel>

@@ -3,29 +3,104 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:UWP_AccesoDatos_SQLServer_Northwind_Empleados"
+    xmlns:utiles="using:UWP_AccesoDatos_SQLServer_Northwind_Empleados.Models"
+    
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="24"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-        </Grid.RowDefinitions>
-        <StackPanel>
-            <TextBox Header="Nombre" Text="{x:Bind Empleado_Actual.FirstName}"></TextBox>
-        </StackPanel>
+    <Page.Resources>
 
-        <Grid Grid.Row="3" >
+
+        <Color x:Key="AzulEspecial">#FF4096DA</Color>
+        <utiles:DateTimeConverter x:Key="conversorfecha"></utiles:DateTimeConverter>
+        <Style TargetType="TextBox" >
+            <Setter Property="HeaderTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <Grid>
+                            <TextBlock Text="{Binding}" Foreground="{StaticResource AzulEspecial}" SelectionHighlightColor="#FF4096DA" />
+                        </Grid>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Margin" Value="10 24 24 0"></Setter>
+        </Style>
+
+
+
+        <Style TargetType="TextBlock" x:Key="Nombre_Empleado">
+            <Setter Property="Foreground" Value="{StaticResource AzulEspecial}"></Setter>
+            <Setter Property="FontStyle" Value="{StaticResource TitleTextBlockStyle }"></Setter>
+            <Setter Property="FontWeight" Value="Normal"></Setter>
+        </Style>
+    </Page.Resources>
+
+    <ScrollViewer>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="24"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" ></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*" MaxWidth="300"></ColumnDefinition>
+                <ColumnDefinition Width="24" ></ColumnDefinition>
+                <ColumnDefinition Width="*" MaxWidth="400"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Button Content="Aceptar"  x:Name="Aceptar"  Padding="50 0 50 0" HorizontalAlignment="Stretch" Click="Aceptar_Click"></Button>
-            <Button Grid.Column="1" x:Name="Cancelar"     Content="Cancelar" Padding="50 0 50 0" HorizontalAlignment="Stretch" Click="Cancelar_Click"></Button>
+            <Image Source="{x:Bind Empleado_Actual.PhotoPath}" Stretch="Uniform" HorizontalAlignment="Stretch" MaxWidth="280"
+                   VerticalAlignment="Top" Margin="0 24 0 0"></Image>
+            <StackPanel x:Name="GrupoDatos1" Grid.Column="2">
+                <TextBox Header="Nombre (*)" Text="{x:Bind Empleado_Actual.FirstName , Mode=TwoWay}"></TextBox>
+                <TextBox Header="Apellidos (*)" Text="{x:Bind Empleado_Actual.LastName , Mode=TwoWay}"></TextBox>
+                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE715;" Foreground="{StaticResource AzulEspecial}" HorizontalAlignment="Left" Margin="10 24 10 0 "/>
+                <Rectangle Height="1" Fill="{StaticResource AzulEspecial}" HorizontalAlignment="Stretch"
+                           Margin="10 0 10 0 "></Rectangle>
+                <TextBox Header="Dirección" Text="{x:Bind Empleado_Actual.Address , Mode=TwoWay}"></TextBox>
+                <TextBox Header="CP" Text="{x:Bind Empleado_Actual.PostalCode , Mode=TwoWay}"></TextBox>
+                <TextBox Header="Ciudad" Text="{x:Bind Empleado_Actual.City , Mode=TwoWay}"></TextBox>
+                <TextBox Header="País" Text="{x:Bind Empleado_Actual.Country , Mode=TwoWay}"></TextBox>
+
+                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE717;" Foreground="{StaticResource AzulEspecial}" HorizontalAlignment="Left" Margin="10 24 10 0 "/>
+                <Rectangle Height="1" Fill="{StaticResource AzulEspecial}" HorizontalAlignment="Stretch"
+                           Margin="10 0 10 0 "></Rectangle>
+
+                <TextBox Header="Teléfono personal" Text="{x:Bind Empleado_Actual.HomePhone, Mode=TwoWay}"></TextBox>
+                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEC92;" Foreground="{StaticResource AzulEspecial}" HorizontalAlignment="Left" Margin="10 24 10 0 "/>
+                <Rectangle Height="1" Fill="{StaticResource AzulEspecial}" HorizontalAlignment="Stretch"
+                           Margin="10 0 10 0 "></Rectangle>
+                <CalendarDatePicker Header="Fecha de nacimiento" Margin="10 24 24 0" Date="{x:Bind Empleado_Actual.BirthDate, Mode=TwoWay, Converter={StaticResource conversorfecha}}"></CalendarDatePicker>
+
+            </StackPanel>
+
+            <Grid Grid.Row="3" Grid.Column="2">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Button    x:Name="Aceptar"  Margin="50 50 50 50" HorizontalAlignment="Stretch" Click="Aceptar_Click">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+
+                            <SymbolIcon Symbol="Accept" ></SymbolIcon>
+                            <TextBlock>Aceptar</TextBlock>
+                        </StackPanel>
+                    </Button.Content>
+
+                </Button>
+                <Button Grid.Column="1" x:Name="Cancelar"  Margin="50 50 50 50" HorizontalAlignment="Stretch" Click="Cancelar_Click">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <SymbolIcon Symbol="Cancel" ></SymbolIcon>
+                            <TextBlock>Cancelar</TextBlock>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+            </Grid>
         </Grid>
-    </Grid>
+    </ScrollViewer>
 </Page>
