@@ -563,8 +563,6 @@ namespace UWP_AccesoDatos_SQLServer_Northwind_Empleados.Models
                " PhotoPath =  @PhotoPath " +
                " WHERE EmployeeID = @EmployeeID ;";
 
-
-
             try
             {
                 using (SqlConnection conn = new SqlConnection(cadenaConexionServidor))
