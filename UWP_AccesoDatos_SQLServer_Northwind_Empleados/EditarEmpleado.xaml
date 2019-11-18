@@ -38,7 +38,37 @@
     </Page.Resources>
 
     <ScrollViewer>
-        <Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="WideState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="720" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="StackCampos.(Grid.Column)" Value="2"/>
+                        <Setter Target="StackCampos.(Grid.Row)" Value="0"/>
+                        <Setter Target="StackCampos.(Grid.ColumnSpan)" Value="1"/>
+                        <Setter Target="StackImagenEmpleado.(Grid.ColumnSpan)" Value="1"/>
+
+                        
+
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="NarrowState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="StackCampos.(Grid.Column)" Value="0"/>
+                        <Setter Target="StackCampos.(Grid.Row)" Value="1"/>
+                        <Setter Target="StackCampos.(Grid.ColumnSpan)" Value="4"/>
+                        <Setter Target="StackImagenEmpleado.(Grid.ColumnSpan)" Value="4"/>
+
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <Grid x:Name="GridPrincipal">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
@@ -48,11 +78,15 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" MaxWidth="300"></ColumnDefinition>
                 <ColumnDefinition Width="24" ></ColumnDefinition>
-                <ColumnDefinition Width="*" MaxWidth="400"></ColumnDefinition>
+                <ColumnDefinition Width="2*" MaxWidth="400"></ColumnDefinition>
+                <ColumnDefinition Width="*" ></ColumnDefinition>
+
             </Grid.ColumnDefinitions>
-            <Image Source="{x:Bind Empleado_Actual.PhotoPath}" Stretch="Uniform" HorizontalAlignment="Stretch" MaxWidth="280"
+            <StackPanel x:Name="StackImagenEmpleado">
+            <Image   Source="{x:Bind Empleado_Actual.PhotoPath}" Stretch="Uniform" HorizontalAlignment="Stretch" MaxWidth="280"
                    VerticalAlignment="Top" Margin="0 24 0 0"></Image>
-            <StackPanel x:Name="GrupoDatos1" Grid.Column="2">
+            </StackPanel>
+            <StackPanel x:Name="StackCampos" >
                 <TextBox Header="Nombre (*)" Text="{x:Bind Empleado_Actual.FirstName , Mode=TwoWay}"></TextBox>
                 <TextBox Header="Apellidos (*)" Text="{x:Bind Empleado_Actual.LastName , Mode=TwoWay}"></TextBox>
                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE715;" Foreground="{StaticResource AzulEspecial}" HorizontalAlignment="Left" Margin="10 24 10 0 "/>
@@ -73,34 +107,36 @@
                            Margin="10 0 10 0 "></Rectangle>
                 <CalendarDatePicker Header="Fecha de nacimiento" Margin="10 24 24 0" Date="{x:Bind Empleado_Actual.BirthDate, Mode=TwoWay, Converter={StaticResource conversorfecha}}"></CalendarDatePicker>
 
+                <Grid>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Button    x:Name="Aceptar"  Margin="50 50 50 50" HorizontalAlignment="Stretch" Click="Aceptar_Click">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+
+                                <SymbolIcon Symbol="Accept" ></SymbolIcon>
+                                <TextBlock>Aceptar</TextBlock>
+                            </StackPanel>
+                        </Button.Content>
+
+                    </Button>
+                    <Button Grid.Column="1" x:Name="Cancelar"  Margin="50 50 50 50" HorizontalAlignment="Stretch" Click="Cancelar_Click">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <SymbolIcon Symbol="Cancel" ></SymbolIcon>
+                                <TextBlock>Cancelar</TextBlock>
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                </Grid>
+                
             </StackPanel>
 
-            <Grid Grid.Row="3" Grid.Column="2">
-
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-
-                <Button    x:Name="Aceptar"  Margin="50 50 50 50" HorizontalAlignment="Stretch" Click="Aceptar_Click">
-                    <Button.Content>
-                        <StackPanel Orientation="Horizontal">
-
-                            <SymbolIcon Symbol="Accept" ></SymbolIcon>
-                            <TextBlock>Aceptar</TextBlock>
-                        </StackPanel>
-                    </Button.Content>
-
-                </Button>
-                <Button Grid.Column="1" x:Name="Cancelar"  Margin="50 50 50 50" HorizontalAlignment="Stretch" Click="Cancelar_Click">
-                    <Button.Content>
-                        <StackPanel Orientation="Horizontal">
-                            <SymbolIcon Symbol="Cancel" ></SymbolIcon>
-                            <TextBlock>Cancelar</TextBlock>
-                        </StackPanel>
-                    </Button.Content>
-                </Button>
-            </Grid>
+           
         </Grid>
     </ScrollViewer>
 </Page>
