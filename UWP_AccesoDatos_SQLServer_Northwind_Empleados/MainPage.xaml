@@ -16,6 +16,7 @@
     <Page.Resources>
 
         <modelos:AMayusculasConverter x:Key="ConverterMayusculas"></modelos:AMayusculasConverter>
+        <modelos:ObjectToImageConverter x:Key="ConverterByteImagen"></modelos:ObjectToImageConverter>
         <Color x:Key="AzulEspecial">#FF4096DA</Color>
         <Style TargetType="TextBlock" x:Key="Nombre_Empleado">            
             <Setter Property="Foreground" Value="{StaticResource AzulEspecial}"></Setter>
@@ -25,8 +26,7 @@
     </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-           
+            <RowDefinition Height="Auto"></RowDefinition>           
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 

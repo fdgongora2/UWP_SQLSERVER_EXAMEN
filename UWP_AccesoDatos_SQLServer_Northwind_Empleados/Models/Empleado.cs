@@ -13,7 +13,7 @@ namespace UWP_AccesoDatos_SQLServer_Northwind_Empleados.Models
     class Empleado : INotifyPropertyChanged
     {
         // Cadena de conexión
-        private const string cadenaConexionServidor = @"Data Source=DESKTOP-D21RT13;Initial Catalog=NORTHWIND;Integrated Security=SSPI";
+        private const string cadenaConexionServidor = @"Data Source=1C1B0D57A991\SQLEXPRESS;Initial Catalog=NORTHWIND;Integrated Security=SSPI";
 
         private int _EmployeeID;
 
@@ -456,7 +456,7 @@ namespace UWP_AccesoDatos_SQLServer_Northwind_Empleados.Models
 
             string Consulta = " INSERT  INTO Employees    " +
                " VALUES  ( @LastName, @FirstName, @Title, @TitleofCourtesy, @BirthDate, @HireDate , " +
-                " @Adress , @City , @Region , @PostalCode , @Country , @HomePhone, @Extension , NULL, @Notes, @ReportsTo, @PhotoPath ) ;" +
+                " @Adress , @City , @Region , @PostalCode , @Country , @HomePhone, @Extension , @Photo, @Notes, @ReportsTo, @PhotoPath ) ;" +
 
                 // Sentencia para que devuelva el nuevo ID de pedido que es autoincremental
                 " SELECT SCOPE_IDENTITY();";
@@ -504,6 +504,15 @@ namespace UWP_AccesoDatos_SQLServer_Northwind_Empleados.Models
                             }
                             
                             cmd.Parameters.AddWithValue("@PhotoPath", ((object)PhotoPath) ?? DBNull.Value);
+
+                            if (Photo != null)
+                            {
+                                cmd.Parameters.AddWithValue("@Photo", ((object)Photo) ?? DBNull.Value);
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@Photo", DBNull.Value);
+                            }
                             // EL valor devuelto corresponde con las filas afectadas por la sentencia
 
                             object returnObj = cmd.ExecuteScalar();
@@ -557,7 +566,7 @@ namespace UWP_AccesoDatos_SQLServer_Northwind_Empleados.Models
                " Country = @Country , " +
                " HomePhone = @HomePhone, " +
                " Extension = @Extension , " +
-               " Photo = NULL, " +
+               " Photo = @Photo, " +
                " Notes = @Notes, " +
                " ReportsTo = @ReportsTo," +
                " PhotoPath =  @PhotoPath " +
@@ -604,6 +613,15 @@ namespace UWP_AccesoDatos_SQLServer_Northwind_Empleados.Models
 
                             }
                             cmd.Parameters.AddWithValue("@PhotoPath", ((object)PhotoPath) ?? DBNull.Value);
+
+                            if (Photo != null)
+                            {
+                                cmd.Parameters.AddWithValue("@Photo", ((object)Photo) ?? DBNull.Value);
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@Photo", DBNull.Value);
+                            }
                             // EL valor devuelto corresponde con las filas afectadas por la sentencia
 
                             return (cmd.ExecuteNonQuery() == 1);

@@ -30,6 +30,25 @@ namespace UWP_AccesoDatos_SQLServer_Northwind_Empleados
         public EditarEmpleado()
         {
             this.InitializeComponent();
+
+            if (Empleado_Actual.Photo != null)
+            {
+
+
+                Stream reader = new Stream();
+                BitmapImage imagen = new BitmapImage();
+
+                using (var stream = await file.OpenReadAsync())
+                {
+                    await bitmap.SetSourceAsync(stream);
+
+                    Stream stream2 = await file.OpenStreamForReadAsync();
+                    stream2.CopyTo(memoryStream);
+                    Empleado_Actual.Photo = memoryStream.ToArray();
+
+
+                }
+            }
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -38,7 +57,7 @@ namespace UWP_AccesoDatos_SQLServer_Northwind_Empleados
             {
                 // Editando
                 Empleado_Actual = (Empleado)e.Parameter;
-
+               
             }
             else
             {
@@ -61,7 +80,7 @@ namespace UWP_AccesoDatos_SQLServer_Northwind_Empleados
             }
             else
             {
-                if  (Empleado_Actual.Alta_Empleado() > 0)
+                if (Empleado_Actual.Alta_Empleado() > 0)
                 {
                     this.Frame.Navigate(typeof(MainPage));
                 }
@@ -80,7 +99,8 @@ namespace UWP_AccesoDatos_SQLServer_Northwind_Empleados
         private async void Img_Empleado_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
         {
 
-            MemoryStream memoryStream = new MemoryStream();
+
+            var memoryStream = new MemoryStream();
 
             var picker = new Windows.Storage.Pickers.FileOpenPicker();
             picker.ViewMode = Windows.Storage.Pickers.PickerViewMode.Thumbnail;
@@ -98,23 +118,20 @@ namespace UWP_AccesoDatos_SQLServer_Northwind_Empleados
                 {
                     await bitmap.SetSourceAsync(stream);
 
-                }
+                    Stream stream2 = await file.OpenStreamForReadAsync();
+                    stream2.CopyTo(memoryStream);
+                    Empleado_Actual.Photo = memoryStream.ToArray();
+                  
 
+                }
 
                 Img_Empleado.Source = bitmap;
 
-                Empleado_Actual.Photo = await ImageToBytes (bitmap);
+                // Empleado_Actual.Photo = await ImageToBytes (bitmap);
 
             }
         }
 
-        public async static Task<byte[]> ImageToBytes(BitmapImage image)
-        {
-            RandomAccessStreamReference streamRef = RandomAccessStreamReference.CreateFromFile(image);
-            IRandomAccessStreamWithContentType streamWithContent = await streamRef.OpenReadAsync();
-            byte[] buffer = new byte[streamWithContent.Size];
-            await streamWithContent.ReadAsync(buffer.AsBuffer(), (uint)streamWithContent.Size, InputStreamOptions.None);
-            return buffer;
-        }
+       
     }
 }
