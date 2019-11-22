@@ -82,8 +82,8 @@
                 <ColumnDefinition Width="*" ></ColumnDefinition>
 
             </Grid.ColumnDefinitions>
-            <StackPanel x:Name="StackImagenEmpleado">
-            <Image  x:Name="Img_Empleado" Source="{x:Bind Empleado_Actual.PhotoPath}" Stretch="Uniform" HorizontalAlignment="Stretch" MaxWidth="280"
+            <StackPanel x:Name="StackImagenEmpleado">                
+            <Image  x:Name="Img_Empleado"  Stretch="Uniform" HorizontalAlignment="Stretch" MaxWidth="280"
                    VerticalAlignment="Top" Margin="0 24 0 0" DoubleTapped="Img_Empleado_DoubleTapped"></Image>
             </StackPanel>
             <StackPanel x:Name="StackCampos" >

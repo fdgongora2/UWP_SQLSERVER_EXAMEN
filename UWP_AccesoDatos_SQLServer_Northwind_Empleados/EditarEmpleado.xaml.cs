@@ -31,24 +31,7 @@ namespace UWP_AccesoDatos_SQLServer_Northwind_Empleados
         {
             this.InitializeComponent();
 
-            if (Empleado_Actual.Photo != null)
-            {
-
-
-                Stream reader = new Stream();
-                BitmapImage imagen = new BitmapImage();
-
-                using (var stream = await file.OpenReadAsync())
-                {
-                    await bitmap.SetSourceAsync(stream);
-
-                    Stream stream2 = await file.OpenStreamForReadAsync();
-                    stream2.CopyTo(memoryStream);
-                    Empleado_Actual.Photo = memoryStream.ToArray();
-
-
-                }
-            }
+          
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -57,7 +40,53 @@ namespace UWP_AccesoDatos_SQLServer_Northwind_Empleados
             {
                 // Editando
                 Empleado_Actual = (Empleado)e.Parameter;
-               
+
+                if (Empleado_Actual.Photo != null)
+                {
+
+                    using (InMemoryRandomAccessStream ms = new InMemoryRandomAccessStream())
+                    {
+                        // Writes the image byte array in an InMemoryRandomAccessStream
+                        // that is needed to set the source of BitmapImage.
+                        using (DataWriter writer = new DataWriter(ms.GetOutputStreamAt(0)))
+                        {
+                            writer.WriteBytes((byte[])Empleado_Actual.Photo);
+
+                            // The GetResults here forces to wait until the operation completes
+                            // (i.e., it is executed synchronously), so this call can block the UI.
+                            writer.StoreAsync().GetResults();
+                        }
+
+                        var image = new BitmapImage();
+                        image.SetSource(ms);
+                        Img_Empleado.Source = image;
+                    }
+
+
+                    // Viejo
+
+                    //MemoryStream streamEnMemoria = new MemoryStream(Empleado_Actual.Photo);
+                    //streamEnMemoria.Seek(0,SeekOrigin.Begin);                         
+                    //BitmapImage imagen = new BitmapImage();
+                    //streamEnMemoria.WriteTo(imagen);
+
+                    //using (var stream = await file.OpenReadAsync())
+                    //{
+                    //    await bitmap.SetSourceAsync(stream);
+
+                    //    Stream stream2 = await file.OpenStreamForReadAsync();
+                    //    stream2.CopyTo(memoryStream);
+                    //    Empleado_Actual.Photo = memoryStream.ToArray();
+
+
+                    //}
+                }
+                else
+                {
+                    // Cargamos una imagen "vacía"
+                    Img_Empleado.Source = new BitmapImage(new Uri("ms-appx:///Assets/SplashScreen.scale-200.png"));
+                }
+
             }
             else
             {

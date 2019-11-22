@@ -17,6 +17,7 @@
 
         <modelos:AMayusculasConverter x:Key="ConverterMayusculas"></modelos:AMayusculasConverter>
         <modelos:ObjectToImageConverter x:Key="ConverterByteImagen"></modelos:ObjectToImageConverter>
+        <modelos:ByteArrayToImageConverter x:Key="ConverterByteArrayImagen"></modelos:ByteArrayToImageConverter>
         <Color x:Key="AzulEspecial">#FF4096DA</Color>
         <Style TargetType="TextBlock" x:Key="Nombre_Empleado">            
             <Setter Property="Foreground" Value="{StaticResource AzulEspecial}"></Setter>
@@ -61,7 +62,7 @@
                             <ColumnDefinition Width="*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         
-                        <Image  Source="{x:Bind PhotoPath}"
+                        <Image  Source="{x:Bind Photo, Converter={StaticResource ConverterByteArrayImagen}}"
                                Grid.Column="0"
                                Stretch="Uniform"
                                 VerticalAlignment="Center"                                
