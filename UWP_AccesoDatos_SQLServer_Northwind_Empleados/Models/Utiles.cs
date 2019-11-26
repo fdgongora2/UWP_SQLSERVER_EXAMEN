@@ -140,6 +140,23 @@ namespace UWP_AccesoDatos_SQLServer_Northwind_Empleados.Models
         }
     }
 
+    public class NoNuloABooleanoConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+
+        {
+            return value != null;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+
+            return value;
+        }
+    }
+
+
+
     public class ByteArrayToImageConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
@@ -147,11 +164,11 @@ namespace UWP_AccesoDatos_SQLServer_Northwind_Empleados.Models
             if (value == null || !(value is byte[]))
                 return null;
 
-            using (InMemoryRandomAccessStream ms = new InMemoryRandomAccessStream())
+            using (InMemoryRandomAccessStream mstream = new InMemoryRandomAccessStream())
             {
                 // Writes the image byte array in an InMemoryRandomAccessStream
                 // that is needed to set the source of BitmapImage.
-                using (DataWriter writer = new DataWriter(ms.GetOutputStreamAt(0)))
+                using (DataWriter writer = new DataWriter(mstream.GetOutputStreamAt(0)))
                 {
                     writer.WriteBytes((byte[])value);
 
@@ -161,7 +178,7 @@ namespace UWP_AccesoDatos_SQLServer_Northwind_Empleados.Models
                 }
 
                 var image = new BitmapImage();
-                image.SetSource(ms);
+                image.SetSource(mstream);
                 return image;
             }
         }

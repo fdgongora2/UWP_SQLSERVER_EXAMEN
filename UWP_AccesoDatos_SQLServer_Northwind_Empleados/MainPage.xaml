@@ -18,6 +18,7 @@
         <modelos:AMayusculasConverter x:Key="ConverterMayusculas"></modelos:AMayusculasConverter>
         <modelos:ObjectToImageConverter x:Key="ConverterByteImagen"></modelos:ObjectToImageConverter>
         <modelos:ByteArrayToImageConverter x:Key="ConverterByteArrayImagen"></modelos:ByteArrayToImageConverter>
+        <modelos:NoNuloABooleanoConverter x:Key="NoNuloABooleano"></modelos:NoNuloABooleanoConverter>
         <Color x:Key="AzulEspecial">#FF4096DA</Color>
         <Style TargetType="TextBlock" x:Key="Nombre_Empleado">            
             <Setter Property="Foreground" Value="{StaticResource AzulEspecial}"></Setter>
@@ -34,8 +35,8 @@
         <CommandBar Background="Transparent" IsOpen="False" DefaultLabelPosition="Right">
 
             <AppBarButton x:Name="Alta_Empleado" Icon="Add" Label="Nuevo Empleado" Click="Alta_Empleado_Click"/>
-            <AppBarButton x:Name="Editar_Empleado" Icon="Edit" Label="Modificar Empleado" Click="Editar_Empleado_Click" />
-            <AppBarButton x:Name="Borrar_Empleado" Icon="Delete" Label="Borrar Empleado" Click="Borrar_Empleado_Click"/>
+            <AppBarButton x:Name="Editar_Empleado" Icon="Edit" Label="Modificar Empleado" Click="Editar_Empleado_Click" IsEnabled="{x:Bind GV_Empleados.SelectedItem, Converter={StaticResource NoNuloABooleano} , Mode=OneWay}" />
+            <AppBarButton x:Name="Borrar_Empleado" Icon="Delete" Label="Borrar Empleado" Click="Borrar_Empleado_Click" IsEnabled="{x:Bind GV_Empleados.SelectedItem, Converter={StaticResource NoNuloABooleano}, Mode=OneWay}" />
             <CommandBar.SecondaryCommands>
                 <AppBarButton Icon="Setting" Label="Settings">
                     <AppBarButton.KeyboardAccelerators>
