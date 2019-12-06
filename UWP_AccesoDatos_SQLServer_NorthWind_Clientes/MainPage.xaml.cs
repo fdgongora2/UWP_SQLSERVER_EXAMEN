@@ -26,5 +26,19 @@ namespace UWP_AccesoDatos_SQLServer_NorthWind_Clientes
         {
             this.InitializeComponent();
         }
+
+        private void MenuNavegacion_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
+        {
+            if (args.IsSettingsInvoked == true)
+            {
+
+            }
+            else if (args.InvokedItemContainer != null)
+            {
+                var navItemTag = args.InvokedItemContainer.Tag.ToString();
+                Frame_contenido.Navigate(Type.GetType(this.GetType().Namespace + "." + navItemTag));
+
+            }
+        }
     }
 }

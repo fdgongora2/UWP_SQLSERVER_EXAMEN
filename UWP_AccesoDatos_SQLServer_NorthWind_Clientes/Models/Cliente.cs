@@ -13,7 +13,7 @@ namespace UWP_AccesoDatos_SQLServer_NorthWind_Clientes.Models
     class Cliente : INotifyPropertyChanged
     {
         // Cadena de conexión
-        private const string cadenaConexionServidor = @"Data Source=1C1B0D57A991\SQLEXPRESS;Initial Catalog=NORTHWIND;Integrated Security=SSPI";
+        private const string cadenaConexionServidor = @"Data Source=DESKTOP-D21RT13;Initial Catalog=NORTHWIND;Integrated Security=SSPI";
 
         private string _CustomerID;
 
@@ -234,13 +234,20 @@ namespace UWP_AccesoDatos_SQLServer_NorthWind_Clientes.Models
 
         }
 
-        public static ObservableCollection<Cliente> Obtener_Clientes()
+        public static ObservableCollection<Cliente> Obtener_Clientes(String filtro_nombre)
         {
 
-            const string GetProductsQuery =
+            string GetProductsQuery =
              " SELECT *                            " +
-             " FROM Customers                      " +
-             " ORDER BY COmpanyName, ContactName   ";
+             " FROM Customers                      ";
+
+            if (filtro_nombre.Trim() != "")
+            {
+                GetProductsQuery += " WHERE UPPER(companyname) LIKE '%"+ filtro_nombre.Trim().ToUpper() + "%' ";
+
+            }
+
+             GetProductsQuery += " ORDER BY CompanyName, ContactName   ";
 
             var clientes = new ObservableCollection<Cliente>();
             try
@@ -253,6 +260,7 @@ namespace UWP_AccesoDatos_SQLServer_NorthWind_Clientes.Models
                         using (SqlCommand cmd = conn.CreateCommand())
                         {
                             cmd.CommandText = GetProductsQuery;
+                            //cmd.Parameters.AddWithValue("@CompanyName", ((object)filtro_nombre.ToUpper()) ?? DBNull.Value);
                             using (SqlDataReader reader = cmd.ExecuteReader())
                             {
                                 while (reader.Read())
@@ -264,16 +272,16 @@ namespace UWP_AccesoDatos_SQLServer_NorthWind_Clientes.Models
                                     // comprueban si el valor es Nulo. Todas las funciones están en la clase "Utiles".
 
                                     clienteAux.CustomerID = Utiles.SafeGetString(reader, 0);
-                                    clienteAux.CompanyName = Utiles.SafeGetString(reader, 0);
-                                    clienteAux.ContactName = Utiles.SafeGetString(reader, 0);
-                                    clienteAux.ContactTitle = Utiles.SafeGetString(reader, 0);
-                                    clienteAux.Address = Utiles.SafeGetString(reader, 0);
-                                    clienteAux.City = Utiles.SafeGetString(reader, 0);
-                                    clienteAux.Region = Utiles.SafeGetString(reader, 0);
-                                    clienteAux.PostalCode = Utiles.SafeGetString(reader, 0);
-                                    clienteAux.Country = Utiles.SafeGetString(reader, 0);
-                                    clienteAux.Phone = Utiles.SafeGetString(reader, 0);
-                                    clienteAux.Fax = Utiles.SafeGetString(reader, 0);
+                                    clienteAux.CompanyName = Utiles.SafeGetString(reader, 1);
+                                    clienteAux.ContactName = Utiles.SafeGetString(reader, 2);
+                                    clienteAux.ContactTitle = Utiles.SafeGetString(reader, 3);
+                                    clienteAux.Address = Utiles.SafeGetString(reader, 4);
+                                    clienteAux.City = Utiles.SafeGetString(reader, 5);
+                                    clienteAux.Region = Utiles.SafeGetString(reader, 6);
+                                    clienteAux.PostalCode = Utiles.SafeGetString(reader, 7);
+                                    clienteAux.Country = Utiles.SafeGetString(reader, 8);
+                                    clienteAux.Phone = Utiles.SafeGetString(reader, 9);
+                                    clienteAux.Fax = Utiles.SafeGetString(reader, 10);
 
                                     clientes.Add(clienteAux);
                                 }

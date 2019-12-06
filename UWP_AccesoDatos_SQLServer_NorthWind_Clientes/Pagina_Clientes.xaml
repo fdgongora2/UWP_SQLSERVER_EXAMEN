@@ -1,0 +1,73 @@
+﻿<Page
+    x:Class="UWP_AccesoDatos_SQLServer_NorthWind_Clientes.Pagina_Clientes"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:UWP_AccesoDatos_SQLServer_NorthWind_Clientes"
+    xmlns:models="using:UWP_AccesoDatos_SQLServer_NorthWind_Clientes.Models"    
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="CLIENTES"                    
+                   Style="{ThemeResource SubtitleTextBlockStyle}"
+                           Margin="24 0 0 0 "></TextBlock>
+
+        <CommandBar Background="Transparent" IsOpen="False" DefaultLabelPosition="Right" Grid.Row="1">
+
+            <AppBarButton x:Name="Alta_Cliente" Icon="Add" Label="Nuevo Cliente" Click="Alta_Cliente_Click" >
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="Control" Key="N" />
+                </AppBarButton.KeyboardAccelerators>
+            </AppBarButton>
+            <AppBarButton x:Name="Editar_Cliente" Icon="Edit" Label="Modificar Cliente" Click="Editar_Cliente_Click" >
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="Control" Key="M" />
+                </AppBarButton.KeyboardAccelerators>
+            </AppBarButton>
+            <AppBarButton x:Name="Borrar_Cliente" Icon="Delete" Label="Borrar Cliente" Click="Borrar_Cliente_Click"  >
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="Control" Key="B" />
+                </AppBarButton.KeyboardAccelerators>
+            </AppBarButton>
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Icon="Setting" Label="Configuración">
+                    <AppBarButton.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Control" Key="C" />
+                    </AppBarButton.KeyboardAccelerators>
+                </AppBarButton>
+            </CommandBar.SecondaryCommands>
+            <CommandBar.Content>               
+                    <AutoSuggestBox x:Name="as_buscar_cliente" PlaceholderText="Buscar cliente" 
+                                    TextChanged="as_buscar_cliente_TextChanged"
+                                    QueryIcon="Find" />                
+            </CommandBar.Content>
+        </CommandBar>
+
+        <GridView x:Name="gv_Clientes" Grid.Row="2">
+            <GridView.ItemTemplate>
+                <DataTemplate x:DataType="models:Cliente">
+                    <StackPanel>
+                        <TextBlock Text="{x:Bind CompanyName}"></TextBlock>
+                        <TextBlock Text="{x:Bind ContactTitle}"></TextBlock>
+                        <TextBlock Text="{x:Bind ContactName}"></TextBlock>
+                        <TextBlock Text="{x:Bind Address}"></TextBlock>
+                        <TextBlock Text="{x:Bind City}"></TextBlock>
+                        <TextBlock Text="{x:Bind PostalCode}"></TextBlock>
+                        <TextBlock Text="{x:Bind Region}"></TextBlock>
+                        <TextBlock Text="{x:Bind Phone}"></TextBlock>
+                        <TextBlock Text="{x:Bind Fax}"></TextBlock>
+                        <TextBlock Text="{x:Bind }"></TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+        </GridView>
+    </Grid>
+</Page>
