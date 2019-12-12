@@ -211,15 +211,7 @@ namespace UWP_AccesoDatos_SQLServer_NorthWind_Clientes.Models
 
             return ImageFromBuffer(value as byte[]);
 
-            if (value is ImageSource imageSource)
-            {
-                return imageSource;
-            }
-            if (value is String url)
-            {
-                return url;
-            }
-            return null;
+           
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

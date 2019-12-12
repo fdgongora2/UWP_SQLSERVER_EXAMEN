@@ -9,6 +9,17 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+    <Page.Resources>
+
+        <Color x:Key="azulGoogle">#FF4285F4</Color>
+
+        <Style TargetType="TextBlock" x:Key="Cabecera">
+            <Setter Property="Foreground" Value="{StaticResource azulGoogle}"></Setter>
+            <Setter Property="FontSize" Value="18"></Setter>
+
+        </Style>
+    </Page.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -20,7 +31,7 @@
                    Style="{ThemeResource SubtitleTextBlockStyle}"
                            Margin="24 0 0 0 "></TextBlock>
 
-        <CommandBar Background="Transparent" IsOpen="False" DefaultLabelPosition="Right" Grid.Row="1">
+        <CommandBar Background="Transparent" IsOpen="False" DefaultLabelPosition="Right" Grid.Row="1" >
 
             <AppBarButton x:Name="Alta_Cliente" Icon="Add" Label="Nuevo Cliente" Click="Alta_Cliente_Click" >
                 <AppBarButton.KeyboardAccelerators>
@@ -44,28 +55,71 @@
                     </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
             </CommandBar.SecondaryCommands>
-            <CommandBar.Content>               
-                    <AutoSuggestBox x:Name="as_buscar_cliente" PlaceholderText="Buscar cliente" 
-                                    TextChanged="as_buscar_cliente_TextChanged"
-                                    QueryIcon="Find" />                
+            <CommandBar.Content >
+                <AutoSuggestBox x:Name="as_buscar_cliente" PlaceholderText="Buscar cliente" 
+                                    TextChanged="as_buscar_cliente_TextChanged"                                 
+                                    QueryIcon="Find" MinWidth="220" />
             </CommandBar.Content>
         </CommandBar>
 
-        <GridView x:Name="gv_Clientes" Grid.Row="2">
+        <GridView x:Name="gv_Clientes" Grid.Row="2" DoubleTapped="gv_Clientes_DoubleTapped">
             <GridView.ItemTemplate>
-                <DataTemplate x:DataType="models:Cliente">
-                    <StackPanel>
-                        <TextBlock Text="{x:Bind CompanyName}"></TextBlock>
-                        <TextBlock Text="{x:Bind ContactTitle}"></TextBlock>
-                        <TextBlock Text="{x:Bind ContactName}"></TextBlock>
-                        <TextBlock Text="{x:Bind Address}"></TextBlock>
-                        <TextBlock Text="{x:Bind City}"></TextBlock>
-                        <TextBlock Text="{x:Bind PostalCode}"></TextBlock>
-                        <TextBlock Text="{x:Bind Region}"></TextBlock>
-                        <TextBlock Text="{x:Bind Phone}"></TextBlock>
-                        <TextBlock Text="{x:Bind Fax}"></TextBlock>
-                        <TextBlock Text="{x:Bind }"></TextBlock>
+                <DataTemplate x:DataType="models:Cliente" >
+                    <StackPanel Margin="10 10 10 10"  MinWidth="300">
+                        <TextBlock Text="{x:Bind CompanyName}" Style="{StaticResource Cabecera}" ></TextBlock>
+                        <Rectangle Fill="{StaticResource azulGoogle}" Height="2" Margin="0 3 0 10" ></Rectangle>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" ></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                            </Grid.RowDefinitions>
+
+
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Foreground="{StaticResource azulGoogle}" Glyph="&#xE779;" VerticalAlignment="Center"
+                                          />
+
+                            <StackPanel Orientation="Horizontal" Grid.Column="1" Margin="0 5 0 5">
+                                <TextBlock Text="{x:Bind ContactName}" FontWeight="Medium"></TextBlock>
+                                <TextBlock Text="  ("></TextBlock>
+                                <TextBlock Text="{x:Bind ContactTitle}"></TextBlock>
+                                <TextBlock Text=")"></TextBlock>
+                            </StackPanel>
+
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Foreground="{StaticResource azulGoogle}" Glyph="&#xE8F3;" VerticalAlignment="Top"
+                                      Grid.Row="1"
+                                          />
+
+                            <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="1">
+                                <TextBlock Text="{x:Bind Address}"></TextBlock>
+                                <TextBlock Text="{x:Bind PostalCode}"></TextBlock>
+                                <TextBlock Text="{x:Bind City}"></TextBlock>                                
+                                <TextBlock Text="{x:Bind Region}"></TextBlock>
+                                <TextBlock Text="{x:Bind Country}"></TextBlock>
+                            </StackPanel>
+
+
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Foreground="{StaticResource azulGoogle}" Glyph="&#xE717;" VerticalAlignment="Center"
+                                      Grid.Row="2"/>
+                            <StackPanel Orientation="Horizontal"  Grid.Row="2" Grid.Column="1" Margin="0 5 0 5">
+
+                                <TextBlock Text="{x:Bind Phone}"></TextBlock>
+                            </StackPanel>
+
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Foreground="{StaticResource azulGoogle}" Glyph="&#xE956;" VerticalAlignment="Center"
+                                          Grid.Row="3" />
+                            <StackPanel Orientation="Horizontal"  Grid.Row="3" Grid.Column="1">
+                                <TextBlock Text="{x:Bind Fax}"></TextBlock>
+                            </StackPanel>
+                        </Grid>
                     </StackPanel>
+
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>

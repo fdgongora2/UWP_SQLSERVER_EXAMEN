@@ -13,7 +13,7 @@ namespace UWP_AccesoDatos_SQLServer_NorthWind_Clientes.Models
     class Cliente : INotifyPropertyChanged
     {
         // Cadena de conexión
-        private const string cadenaConexionServidor = @"Data Source=DESKTOP-D21RT13;Initial Catalog=NORTHWIND;Integrated Security=SSPI";
+        private const string cadenaConexionServidor = @"Data Source=1C1B0D57A991\SQLEXPRESS;Initial Catalog=NORTHWIND;Integrated Security=SSPI";
 
         private string _CustomerID;
 
@@ -387,7 +387,8 @@ namespace UWP_AccesoDatos_SQLServer_NorthWind_Clientes.Models
                " PostalCode = @PostalCode , " +
                " Country = @Country , " +
                " Phone = @Phone , " +
-               " Fax = @Fax ;";
+               " Fax = @Fax   " +
+               " WHERE CustomerID  = @CustomerID ";
 
             try
             {
@@ -414,7 +415,8 @@ namespace UWP_AccesoDatos_SQLServer_NorthWind_Clientes.Models
                             cmd.Parameters.AddWithValue("@PostalCode", ((object)PostalCode) ?? DBNull.Value);
                             cmd.Parameters.AddWithValue("@Country", ((object)Country) ?? DBNull.Value);
                             cmd.Parameters.AddWithValue("@Phone", ((object)Phone) ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@Fax", ((object)Fax) ?? DBNull.Value);                            
+                            cmd.Parameters.AddWithValue("@Fax", ((object)Fax) ?? DBNull.Value);
+                            
                             return (cmd.ExecuteNonQuery() == 1);
                         }
                     }

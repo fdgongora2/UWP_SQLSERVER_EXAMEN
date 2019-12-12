@@ -49,17 +49,35 @@ namespace UWP_AccesoDatos_SQLServer_NorthWind_Clientes
 
         private void Alta_Cliente_Click(object sender, RoutedEventArgs e)
         {
-
+            this.Frame.Navigate(typeof(DatosCliente));
         }
 
         private void Editar_Cliente_Click(object sender, RoutedEventArgs e)
         {
+            if (gv_Clientes.SelectedItem != null)
+            {
+                this.Frame.Navigate(typeof(DatosCliente), gv_Clientes.SelectedItem);
+
+            }
 
         }
 
         private void Borrar_Cliente_Click(object sender, RoutedEventArgs e)
         {
+            if (gv_Clientes.SelectedItem != null)
+            {
+                ((Cliente)gv_Clientes.SelectedItem).Borrar_Cliente();              
 
+            }
+        }
+
+        private void gv_Clientes_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            if (gv_Clientes.SelectedItem != null)
+            {
+                this.Frame.Navigate(typeof(DatosCliente), gv_Clientes.SelectedItem);
+
+            }
         }
     }
 }
